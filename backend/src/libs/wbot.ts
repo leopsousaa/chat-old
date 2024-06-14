@@ -2,22 +2,20 @@ import * as Sentry from "@sentry/node";
 import makeWASocket, {
   AuthenticationState,
   DisconnectReason,
-  fetchLatestBaileysVersion,
+  fetchLatestBaileysVersion
 } from "@whiskeysockets/baileys";
-import P from "pino";
 
-import Whatsapp from "../models/Whatsapp";
-import { logger } from "../utils/logger";
+import { Boom } from "@hapi/boom/lib";
 import MAIN_LOGGER from "@whiskeysockets/baileys/lib/Utils/logger";
-import {useMultiFileAuthState} from "../helpers/useMultiFileAuthState";
-import authState from "../helpers/authState";
-import { Boom } from "@hapi/boom";
 import AppError from "../errors/AppError";
+import { useMultiFileAuthState } from "../helpers/useMultiFileAuthState";
+import Whatsapp from "../models/Whatsapp";
+import DeleteBaileysService from "../services/BaileysServices/DeleteBaileysService";
+import { StartWhatsAppSession } from "../services/WbotServices/StartWhatsAppSession";
+import { logger } from "../utils/logger";
+import { cacheLayer } from "./cache";
 import { getIO } from "./socket";
 import { Store } from "./store";
-import { StartWhatsAppSession } from "../services/WbotServices/StartWhatsAppSession";
-import DeleteBaileysService from "../services/BaileysServices/DeleteBaileysService";
-import { cacheLayer } from "./cache";
 
 const loggerBaileys = MAIN_LOGGER.child({});
 loggerBaileys.level = "error";
@@ -89,9 +87,8 @@ export const initWASocket = async (whatsapp: Whatsapp): Promise<Session> => {
           logger: loggerBaileys,
           printQRInTerminal: false,
           auth: state as AuthenticationState,
-          version: [2,2323,4],
+          version: [2, 2323, 4]
         });
-
 
         wsocket.ev.on(
           "connection.update",

@@ -1,11 +1,11 @@
 // models/AgendamentoEmail.ts
 import {
-  Table,
-  Column,
-  Model,
-  ForeignKey,
   BelongsTo,
+  Column,
   DataType,
+  ForeignKey,
+  Model,
+  Table
 } from "sequelize-typescript";
 import Company from "./Company";
 
